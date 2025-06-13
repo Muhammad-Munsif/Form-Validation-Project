@@ -1,0 +1,43 @@
+/* Custom styles to complement Tailwind */
+.invalid {
+    color: #6b7280; /* gray-500 */
+    list-style-type: none;
+}
+
+.invalid::before {
+    content: "✗ ";
+    color: #ef4444; /* red-500 */
+}
+
+.valid {
+    color: #6b7280; /* gray-500 */
+    list-style-type: none;
+}
+
+.valid::before {
+    content: "✓ ";
+    color: #10b981; /* green-500 */
+}
+
+/* Animation for error messages */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+/* Focus styles for better accessibility */
+input:focus, button:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* indigo-500 with opacity */
+}
+
+/* Transition for input borders */
+input {
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
