@@ -1,4 +1,4 @@
-    <script>
+
         document.addEventListener('DOMContentLoaded', function () {
             // DOM elements
             const form = document.getElementById('signup-form');
@@ -421,4 +421,4 @@
                 });
             });
         });
-    </script>
+    
