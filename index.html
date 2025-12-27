@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Registration | Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #a5b4fc;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --gradient-hover: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            --shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+            --shadow-lg: 0 20px 40px rgba(99, 102, 241, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-left {
+            background: var(--gradient);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-left::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: float 20s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .input-group {
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .input-group:focus-within {
+            transform: translateY(-2px);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            transition: var(--transition);
+        }
+
+        .input-group:focus-within .input-icon {
+            color: var(--primary);
+        }
+
+        .input-field {
+            padding-left: 48px !important;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: var(--transition);
+            font-size: 15px;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .input-field.valid {
+            border-color: var(--success);
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+
+        .input-field.invalid {
+            border-color: var(--danger);
+            background-color: rgba(239, 68, 68, 0.05);
+        }
+
+        .validation-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .validation-icon.show {
+            opacity: 1;
+        }
+
+        .password-requirements {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            transition: var(--transition);
+        }
+
+        .requirement-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .requirement-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 10px;
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .requirement-item.valid .requirement-icon {
+            background: var(--success);
+            color: white;
+        }
+
+        .requirement-item.invalid .requirement-icon {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .requirement-text {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .requirement-item.valid .requirement-text {
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .strength-meter {
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: var(--transition);
+            border-radius: 3px;
+        }
+
+        .strength-text {
+            font-size: 12px;
+            margin-top: 4px;
+            text-align: right;
+            font-weight: 500;
+        }
+
+        .btn-submit {
+            background: var(--gradient);
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .btn-submit i {
+            margin-right: 8px;
+        }
+
+        .terms-checkbox {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .terms-label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            animation: modalIn 0.4s ease-out;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: confetti 2s ease-out forwards;
+        }
+
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .card-left {
+                padding: 40px 20px;
+                text-align: center;
+            }
+
+            .feature-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .feature-icon i {
+                font-size: 24px;
+            }
+
+            .card-left h2 {
+                font-size: 24px;
+            }
+
+            .card-left p {
+                font-size: 14px;
+            }
+
+            .input-field {
+                font-size: 14px;
+                padding: 14px 14px 14px 48px !important;
+            }
+
+            .password-requirements {
+                padding: 12px;
+            }
+
+            .requirement-text {
+                font-size: 12px;
+            }
+
+            .btn-submit {
+                padding: 14px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+
+            .card-left {
+                border-radius: var(--radius) var(--radius) 0 0;
+            }
+
+            .card-right {
+                border-radius: 0 0 var(--radius) var(--radius);
+            }
+
+            .feature-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 15px;
+            }
+
+            .feature-icon i {
+                font-size: 20px;
+            }
+
+            .input-field {
+                padding: 12px 12px 12px 48px !important;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .form-container {
+                max-width: 1000px;
+            }
+
+            .card-left {
+                padding: 60px 40px;
+            }
+        }
+
+        /* Tablet specific adjustments */
+        @media (min-width: 641px) and (max-width: 1023px) {
+            .form-container {
+                max-width: 90%;
+            }
+
+            .card-left {
+                padding: 40px 30px;
+            }
+
+            .card-right {
+                padding: 40px 30px;
+            }
+        }
+
+        /* Loading animation for submit button */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Shake animation for invalid fields */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-5px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* Progress indicator */
+        .form-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-progress::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .progress-step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition);
+        }
+
+        .progress-step.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .progress-step.completed {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .progress-label {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+
+        .progress-step.active .progress-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .progress-step.completed .progress-label {
+            color: var(--success);
+        }
+
+        @media (max-width: 768px) {
+            .form-progress {
+                margin-bottom: 20px;
+            }
+
+            .progress-step {
+                width: 26px;
+                height: 26px;
+                font-size: 11px;
+            }
+
+            .progress-label {
+                font-size: 10px;
+                top: 35px;
+            }
+        }
+
+        /* Social login buttons */
+        .social-login {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .social-btn {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .social-btn.google:hover {
+            border-color: #ea4335;
+        }
+
+        .social-btn.facebook:hover {
+            border-color: #1877f2;
+        }
+
+        .social-btn.github:hover {
+            border-color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .social-login {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container w-full max-w-6xl">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="md:flex">
+                <!-- Left Side - Visual Content -->
+                <div class="md:w-2/5 card-left text-white p-8 md:p-12">
+                    <div class="card-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-shield text-2xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold mb-4">Join Our Community</h2>
+                        <p class="text-white/80 mb-8">Create your secure account and unlock exclusive features</p>
+
+                        <div class="space-y-6 mt-10">
+                            <div class="flex items-start">
+                                <div class="bg-white/20 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Bank-Level Security</h4>
+                                    <p class="text-sm text-white/70">Your data is protected with 256-bit encryption</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-white/20 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Lightning Fast</h4>
+                                    <p class="text-sm text-white/70">Experience seamless performance across all devices</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="bg-white/20 p-2 rounded-lg mr-4">
+                                    <i class="fas fa-headset"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">24/7 Support</h4>
+                                    <p class="text-sm text-white/70">Our team is always ready to help you</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-12 pt-8 border-t border-white/20">
+                            <p class="text-sm text-white/70">Already have an account? <a href="#" class="font-semibold text-white hover:text-white/90 transition">Sign in here</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Form -->
+                <div class="md:w-3/5 p-8 md:p-12 card-right">
+                    <!-- Progress Indicator -->
+                    <div class="form-progress">
+                        <div class="progress-step active">
+                            1
+                            <span class="progress-label">Account</span>
+                        </div>
+                        <div class="progress-step">
+                            2
+                            <span class="progress-label">Profile</span>
+                        </div>
+                        <div class="progress-step">
+                            3
+                            <span class="progress-label">Complete</span>
+                        </div>
+                    </div>
+
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Create Your Account</h1>
+                    <p class="text-gray-600 mb-8">Fill in your details to get started</p>
+
+                    <!-- Social Login -->
+                    <div class="social-login">
+                        <button type="button" class="social-btn google">
+                            <i class="fab fa-google text-red-500"></i>
+                            <span class="ml-2 text-sm font-medium hidden md:inline">Google</span>
+                        </button>
+                        <button type="button" class="social-btn facebook">
+                            <i class="fab fa-facebook text-blue-600"></i>
+                            <span class="ml-2 text-sm font-medium hidden md:inline">Facebook</span>
+                        </button>
+                        <button type="button" class="social-btn github">
+                            <i class="fab fa-github"></i>
+                            <span class="ml-2 text-sm font-medium hidden md:inline">GitHub</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center my-6">
+                        <div class="flex-grow border-t border-gray-300"></div>
+                        <span class="mx-4 text-gray-500 text-sm">Or continue with email</span>
+                        <div class="flex-grow border-t border-gray-300"></div>
+                    </div>
+
+                    <form id="signup-form" class="space-y-6" novalidate>
+                        <!-- Full Name -->
+                        <div class="input-group">
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <input type="text" id="fullname" name="fullname"
+                                class="input-field w-full px-4 py-4 rounded-xl focus:outline-none focus:ring-0"
+                                placeholder="Enter your full name" required minlength="3">
+                            <div class="validation-icon" id="name-valid">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                            <div class="validation-icon" id="name-invalid">
+                                <i class="fas fa-times-circle text-red-500"></i>
+                            </div>
+                            <p class="mt-2 text-xs text-red-600 hidden" id="name-error">Please enter a valid name (at least 3 characters)</p>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="input-group">
+                            <div class="input-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <input type="email" id="email" name="email"
+                                class="input-field w-full px-4 py-4 rounded-xl focus:outline-none focus:ring-0"
+                                placeholder="your.email@example.com" required>
+                            <div class="validation-icon" id="email-valid">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                            <div class="validation-icon" id="email-invalid">
+                                <i class="fas fa-times-circle text-red-500"></i>
+                            </div>
+                            <p class="mt-2 text-xs text-red-600 hidden" id="email-error">Please enter a valid email address</p>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="input-group">
+                            <div class="input-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <input type="password" id="password" name="password"
+                                class="input-field w-full px-4 py-4 rounded-xl focus:outline-none focus:ring-0"
+                                placeholder="Create a strong password" required minlength="8"
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+                            <button type="button"
+                                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition"
+                                id="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="validation-icon" id="password-valid">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                            <div class="validation-icon" id="password-invalid">
+                                <i class="fas fa-times-circle text-red-500"></i>
+                            </div>
+
+                            <div class="password-requirements">
+                                <div class="requirement-item" id="length">
+                                    <div class="requirement-icon">
+                                        <i class="fas fa-circle"></i>
+                                    </div>
+                                    <span class="requirement-text">At least 8 characters</span>
+                                </div>
+                                <div class="requirement-item" id="uppercase">
+                                    <div class="requirement-icon">
+                                        <i class="fas fa-circle"></i>
+                                    </div>
+                                    <span class="requirement-text">One uppercase letter (A-Z)</span>
+                                </div>
+                                <div class="requirement-item" id="lowercase">
+                                    <div class="requirement-icon">
+                                        <i class="fas fa-circle"></i>
+                                    </div>
+                                    <span class="requirement-text">One lowercase letter (a-z)</span>
+                                </div>
+                                <div class="requirement-item" id="number">
+                                    <div class="requirement-icon">
+                                        <i class="fas fa-circle"></i>
+                                    </div>
+                                    <span class="requirement-text">One number (0-9)</span>
+                                </div>
+                                <div class="requirement-item" id="special">
+                                    <div class="requirement-icon">
+                                        <i class="fas fa-circle"></i>
+                                    </div>
+                                    <span class="requirement-text">One special character (@$!%*?&)</span>
+                                </div>
+
+                                <div class="strength-meter">
+                                    <div class="strength-fill" id="strength-fill"></div>
+                                </div>
+                                <div class="strength-text" id="strength-text">Password strength: None</div>
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="input-group">
+                            <div class="input-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <input type="password" id="confirm-password" name="confirm-password"
+                                class="input-field w-full px-4 py-4 rounded-xl focus:outline-none focus:ring-0"
+                                placeholder="Confirm your password" required>
+                            <div class="validation-icon" id="confirm-valid">
+                                <i class="fas fa-check-circle text-green-500"></i>
+                            </div>
+                            <div class="validation-icon" id="confirm-invalid">
+                                <i class="fas fa-times-circle text-red-500"></i>
+                            </div>
+                            <p class="mt-2 text-xs text-red-600 hidden" id="confirm-error">Passwords do not match</p>
+                        </div>
+
+                        <!-- Terms Checkbox -->
+                        <div class="flex items-start mt-6">
+                            <input id="terms" name="terms" type="checkbox"
+                                class="terms-checkbox mt-1 mr-3 focus:ring-indigo-500" required>
+                            <label for="terms" class="terms-label text-sm text-gray-700">
+                                I agree to the <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">Terms of Service</a> and <a href="#"
+                                    class="text-indigo-600 hover:text-indigo-800 font-medium">Privacy Policy</a>. I understand that my data will be processed in accordance with these terms.
+                            </label>
+                        </div>
+                        <p class="mt-2 text-xs text-red-600 hidden" id="terms-error">You must agree to the terms and conditions</p>
+
+                        <!-- Submit Button -->
+                        <div class="pt-4">
+                            <button type="submit" id="submit-btn"
+                                class="btn-submit w-full text-white py-4 rounded-xl font-semibold text-lg disabled:opacity-70 disabled:cursor-not-allowed"
+                                disabled>
+                                <i class="fas fa-user-plus"></i> Create Account
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="mt-8 text-center">
+                        <p class="text-sm text-gray-600">
+                            Already have an account?
+                            <a href="#" class="text-indigo-600 hover:text-indigo-800 font-semibold ml-1 transition">Sign in here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full success-modal">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-gradient-to-r from-green-100 to-emerald-100 mb-6">
+                    <i class="fas fa-check text-4xl text-green-600"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Registration Successful!</h3>
+                <div class="mb-6">
+                    <p class="text-gray-600">Welcome to our community! Your account has been created successfully.</p>
+                    <p class="text-gray-600 text-sm mt-2">Check your email to verify your account and get started.</p>
+                </div>
+                <div class="flex space-x-4">
+                    <button type="button" id="modal-close-btn"
+                        class="flex-1 bg-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-indigo-700 transition">
+                        Continue to Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // DOM elements
+            const form = document.getElementById('signup-form');
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            const termsCheckbox = document.getElementById('terms');
+            const submitBtn = document.getElementById('submit-btn');
+            const togglePasswordBtn = document.getElementById('toggle-password');
+            const successModal = document.getElementById('success-modal');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const progressSteps = document.querySelectorAll('.progress-step');
+
+            // Password requirements elements
+            const lengthRequirement = document.getElementById('length');
+            const uppercaseRequirement = document.getElementById('uppercase');
+            const lowercaseRequirement = document.getElementById('lowercase');
+            const numberRequirement = document.getElementById('number');
+            const specialRequirement = document.getElementById('special');
+            const strengthFill = document.getElementById('strength-fill');
+            const strengthText = document.getElementById('strength-text');
+
+            // Validation flags
+            let isNameValid = false;
+            let isEmailValid = false;
+            let isPasswordValid = false;
+            let isConfirmValid = false;
+            let isTermsChecked = false;
+
+            // Event listeners for real-time validation
+            fullnameInput.addEventListener('input', validateName);
+            emailInput.addEventListener('input', validateEmail);
+            passwordInput.addEventListener('input', validatePassword);
+            confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+            termsCheckbox.addEventListener('change', validateTerms);
+            togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
+            form.addEventListener('submit', handleFormSubmission);
+            modalCloseBtn.addEventListener('click', closeSuccessModal);
+
+            // Initialize tooltips for social buttons
+            document.querySelectorAll('.social-btn').forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    const platform = this.classList.contains('google') ? 'Google' : 
+                                   this.classList.contains('facebook') ? 'Facebook' : 'GitHub';
+                    // In a real implementation, you could show a tooltip here
+                });
+            });
+
+            // Validate name field
+            function validateName() {
+                const nameError = document.getElementById('name-error');
+                const nameValidIcon = document.getElementById('name-valid');
+                const nameInvalidIcon = document.getElementById('name-invalid');
+
+                if (fullnameInput.validity.valid) {
+                    isNameValid = true;
+                    fullnameInput.classList.remove('invalid');
+                    fullnameInput.classList.add('valid');
+                    nameError.classList.add('hidden');
+                    nameValidIcon.classList.add('show');
+                    nameInvalidIcon.classList.remove('show');
+                    updateProgress(0, true);
+                } else {
+                    isNameValid = false;
+                    fullnameInput.classList.remove('valid');
+                    fullnameInput.classList.add('invalid');
+                    nameError.classList.remove('hidden');
+                    nameValidIcon.classList.remove('show');
+                    nameInvalidIcon.classList.add('show');
+                    updateProgress(0, false);
+
+                    if (fullnameInput.validity.valueMissing) {
+                        nameError.textContent = 'Name is required';
+                    } else if (fullnameInput.validity.tooShort) {
+                        nameError.textContent = `Name should be at least ${fullnameInput.minLength} characters`;
+                    }
+                }
+
+                updateSubmitButton();
+            }
+
+            // Validate email field
+            function validateEmail() {
+                const emailError = document.getElementById('email-error');
+                const emailValidIcon = document.getElementById('email-valid');
+                const emailInvalidIcon = document.getElementById('email-invalid');
+
+                if (emailInput.validity.valid) {
+                    isEmailValid = true;
+                    emailInput.classList.remove('invalid');
+                    emailInput.classList.add('valid');
+                    emailError.classList.add('hidden');
+                    emailValidIcon.classList.add('show');
+                    emailInvalidIcon.classList.remove('show');
+                    updateProgress(0, true);
+                } else {
+                    isEmailValid = false;
+                    emailInput.classList.remove('valid');
+                    emailInput.classList.add('invalid');
+                    emailError.classList.remove('hidden');
+                    emailValidIcon.classList.remove('show');
+                    emailInvalidIcon.classList.add('show');
+                    updateProgress(0, false);
+
+                    if (emailInput.validity.valueMissing) {
+                        emailError.textContent = 'Email is required';
+                    } else if (emailInput.validity.typeMismatch) {
+                        emailError.textContent = 'Please enter a valid email address';
+                    }
+                }
+
+                updateSubmitButton();
+            }
+
+            // Validate password field
+            function validatePassword() {
+                const password = passwordInput.value;
+                let strength = 0;
+
+                // Check length
+                if (password.length >= 8) {
+                    lengthRequirement.classList.add('valid');
+                    lengthRequirement.classList.remove('invalid');
+                    strength += 20;
+                } else {
+                    lengthRequirement.classList.remove('valid');
+                    lengthRequirement.classList.add('invalid');
+                }
+
+                // Check uppercase
+                if (/[A-Z]/.test(password)) {
+                    uppercaseRequirement.classList.add('valid');
+                    uppercaseRequirement.classList.remove('invalid');
+                    strength += 20;
+                } else {
+                    uppercaseRequirement.classList.remove('valid');
+                    uppercaseRequirement.classList.add('invalid');
+                }
+
+                // Check lowercase
+                if (/[a-z]/.test(password)) {
+                    lowercaseRequirement.classList.add('valid');
+                    lowercaseRequirement.classList.remove('invalid');
+                    strength += 20;
+                } else {
+                    lowercaseRequirement.classList.remove('valid');
+                    lowercaseRequirement.classList.add('invalid');
+                }
+
+                // Check number
+                if (/\d/.test(password)) {
+                    numberRequirement.classList.add('valid');
+                    numberRequirement.classList.remove('invalid');
+                    strength += 20;
+                } else {
+                    numberRequirement.classList.remove('valid');
+                    numberRequirement.classList.add('invalid');
+                }
+
+                // Check special character
+                if (/[@$!%*?&]/.test(password)) {
+                    specialRequirement.classList.add('valid');
+                    specialRequirement.classList.remove('invalid');
+                    strength += 20;
+                } else {
+                    specialRequirement.classList.remove('valid');
+                    specialRequirement.classList.add('invalid');
+                }
+
+                // Update strength meter
+                strengthFill.style.width = `${strength}%`;
+                
+                // Set strength color and text
+                if (strength <= 20) {
+                    strengthFill.style.backgroundColor = '#ef4444';
+                    strengthText.textContent = 'Password strength: Weak';
+                    strengthText.style.color = '#ef4444';
+                } else if (strength <= 60) {
+                    strengthFill.style.backgroundColor = '#f59e0b';
+                    strengthText.textContent = 'Password strength: Fair';
+                    strengthText.style.color = '#f59e0b';
+                } else if (strength <= 80) {
+                    strengthFill.style.backgroundColor = '#10b981';
+                    strengthText.textContent = 'Password strength: Good';
+                    strengthText.style.color = '#10b981';
+                } else {
+                    strengthFill.style.backgroundColor = '#059669';
+                    strengthText.textContent = 'Password strength: Strong';
+                    strengthText.style.color = '#059669';
+                }
+
+                // Validate against pattern
+                if (passwordInput.validity.valid) {
+                    isPasswordValid = true;
+                    passwordInput.classList.remove('invalid');
+                    passwordInput.classList.add('valid');
+                    document.getElementById('password-valid').classList.add('show');
+                    document.getElementById('password-invalid').classList.remove('show');
+                    updateProgress(1, true);
+                } else {
+                    isPasswordValid = false;
+                    passwordInput.classList.remove('valid');
+                    passwordInput.classList.add('invalid');
+                    document.getElementById('password-valid').classList.remove('show');
+                    document.getElementById('password-invalid').classList.add('show');
+                    updateProgress(1, false);
+                }
+
+                // Re-validate confirm password if it has value
+                if (confirmPasswordInput.value) {
+                    validateConfirmPassword();
+                }
+
+                updateSubmitButton();
+            }
+
+            // Validate confirm password field
+            function validateConfirmPassword() {
+                const confirmError = document.getElementById('confirm-error');
+                const confirmValidIcon = document.getElementById('confirm-valid');
+                const confirmInvalidIcon = document.getElementById('confirm-invalid');
+
+                if (confirmPasswordInput.value === passwordInput.value && passwordInput.value) {
+                    isConfirmValid = true;
+                    confirmPasswordInput.classList.remove('invalid');
+                    confirmPasswordInput.classList.add('valid');
+                    confirmError.classList.add('hidden');
+                    confirmValidIcon.classList.add('show');
+                    confirmInvalidIcon.classList.remove('show');
+                    updateProgress(1, true);
+                } else {
+                    isConfirmValid = false;
+                    confirmPasswordInput.classList.remove('valid');
+                    confirmPasswordInput.classList.add('invalid');
+                    confirmValidIcon.classList.remove('show');
+                    confirmInvalidIcon.classList.add('show');
+
+                    if (!passwordInput.value) {
+                        confirmError.textContent = 'Please enter a password first';
+                    } else {
+                        confirmError.textContent = 'Passwords do not match';
+                    }
+
+                    if (confirmPasswordInput.value) {
+                        confirmError.classList.remove('hidden');
+                    } else {
+                        confirmError.classList.add('hidden');
+                    }
+                    updateProgress(1, false);
+                }
+
+                updateSubmitButton();
+            }
+
+            // Validate terms checkbox
+            function validateTerms() {
+                const termsError = document.getElementById('terms-error');
+
+                if (termsCheckbox.checked) {
+                    isTermsChecked = true;
+                    termsError.classList.add('hidden');
+                    updateProgress(2, true);
+                } else {
+                    isTermsChecked = false;
+                    termsError.classList.remove('hidden');
+                    updateProgress(2, false);
+                }
+
+                updateSubmitButton();
+            }
+
+            // Update progress indicator
+            function updateProgress(stepIndex, isValid) {
+                if (isValid) {
+                    progressSteps[stepIndex].classList.add('completed');
+                    progressSteps[stepIndex].classList.remove('active');
+                    
+                    // Move to next step if available
+                    if (stepIndex < 2) {
+                        progressSteps[stepIndex + 1].classList.add('active');
+                    }
+                } else {
+                    progressSteps[stepIndex].classList.remove('completed');
+                    if (stepIndex === 0) {
+                        progressSteps[stepIndex].classList.add('active');
+                    }
+                }
+            }
+
+            // Toggle password visibility
+            function togglePasswordVisibility() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                // Toggle eye icon
+                const icon = togglePasswordBtn.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+                
+                // Also toggle for confirm password
+                confirmPasswordInput.type = type;
+            }
+
+            // Update submit button state
+            function updateSubmitButton() {
+                if (isNameValid && isEmailValid && isPasswordValid && isConfirmValid && isTermsChecked) {
+                    submitBtn.disabled = false;
+                } else {
+                    submitBtn.disabled = true;
+                }
+            }
+
+            // Handle form submission
+            function handleFormSubmission(e) {
+                e.preventDefault();
+
+                // Validate all fields one more time
+                validateName();
+                validateEmail();
+                validatePassword();
+                validateConfirmPassword();
+                validateTerms();
+
+                // Check if form is valid
+                if (isNameValid && isEmailValid && isPasswordValid && isConfirmValid && isTermsChecked) {
+                    // Show loading state
+                    submitBtn.classList.add('btn-loading');
+                    submitBtn.disabled = true;
+
+                    // Simulate API call
+                    setTimeout(() => {
+                        // In a real app, you would send the data to a server here
+                        console.log('Form submitted successfully!');
+                        console.log({
+                            name: fullnameInput.value,
+                            email: emailInput.value,
+                            password: passwordInput.value
+                        });
+
+                        // Remove loading state
+                        submitBtn.classList.remove('btn-loading');
+
+                        // Show success modal with confetti effect
+                        successModal.classList.remove('hidden');
+                        document.body.classList.add('overflow-hidden');
+                        
+                        // Create confetti effect
+                        createConfetti();
+
+                        // Reset form (optional)
+                        // form.reset();
+                        // Reset validation states
+                        // isNameValid = isEmailValid = isPasswordValid = isConfirmValid = isTermsChecked = false;
+                        // updateSubmitButton();
+                    }, 1500);
+                } else {
+                    // Highlight invalid fields
+                    if (!isNameValid) {
+                        fullnameInput.classList.add('shake');
+                        setTimeout(() => fullnameInput.classList.remove('shake'), 500);
+                    }
+                    if (!isEmailValid) {
+                        emailInput.classList.add('shake');
+                        setTimeout(() => emailInput.classList.remove('shake'), 500);
+                    }
+                    if (!isPasswordValid) {
+                        passwordInput.classList.add('shake');
+                        setTimeout(() => passwordInput.classList.remove('shake'), 500);
+                    }
+                    if (!isConfirmValid) {
+                        confirmPasswordInput.classList.add('shake');
+                        setTimeout(() => confirmPasswordInput.classList.remove('shake'), 500);
+                    }
+                    if (!isTermsChecked) {
+                        termsCheckbox.classList.add('shake');
+                        setTimeout(() => termsCheckbox.classList.remove('shake'), 500);
+                    }
+                }
+            }
+
+            // Create confetti effect
+            function createConfetti() {
+                const modalContent = successModal.querySelector('.success-modal');
+                for (let i = 0; i < 30; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.top = `-10px`;
+                    confetti.style.backgroundColor = getRandomColor();
+                    confetti.style.animationDelay = `${Math.random() * 2}s`;
+                    modalContent.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 2000);
+                }
+            }
+
+            function getRandomColor() {
+                const colors = ['#6366f1', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            // Close success modal
+            function closeSuccessModal() {
+                successModal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            // Initial validation check
+            updateSubmitButton();
+
+            // Social login button handlers
+            document.querySelectorAll('.social-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const platform = this.classList.contains('google') ? 'Google' : 
+                                   this.classList.contains('facebook') ? 'Facebook' : 'GitHub';
+                    alert(`In a real implementation, this would redirect to ${platform} authentication`);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
