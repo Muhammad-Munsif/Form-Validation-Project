@@ -1,4 +1,4 @@
- <script>
+
         // Registration Form Logic
         document.addEventListener("DOMContentLoaded", function () {
             // DOM elements
@@ -611,4 +611,4 @@
                 initializeCharts();
             }
         });
-    </script>
+  
